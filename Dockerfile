@@ -37,7 +37,11 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && rm -rf /var/lib/apt/lists/*
 
 # Setup custom app php.ini
+# php configuration via environment variables broken with RoadRunner 2
+# however, the static-app.ini will work with RoadRunner 2
 COPY app.ini /usr/local/etc/php/conf.d/app.ini
+#COPY static-app.ini /usr/local/etc/php/conf.d/app.ini
+
 # Setup apache2 vhost
 COPY apache2-vhost.conf /etc/apache2/sites-available/000-default.conf
 # Change DocumentRoot in other Apache configuration
