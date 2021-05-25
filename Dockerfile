@@ -38,9 +38,9 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 
 # Setup custom app php.ini
 COPY app.ini /usr/local/etc/php/conf.d/app.ini
-
 # Setup apache2 vhost
 COPY apache2-vhost.conf /etc/apache2/sites-available/000-default.conf
+
 # Change DocumentRoot in other Apache configuration
 RUN sed -ri -e 's!/var/www/!//var/www/html/public!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf \
     && sed -i 's/80/8080/g' /etc/apache2/ports.conf
@@ -50,11 +50,14 @@ COPY --from=roadrunner /usr/bin/rr /usr/bin/rr
 
 WORKDIR /var/www/html
 
-EXPOSE 8080 8000
-
 # Prepare Laravel project with Octane and RoadRunner
 RUN composer create-project laravel/laravel . \
     && composer require laravel/octane \
     && composer require spiral/roadrunner:^2.0 --with-all-dependencies \
-    && touch .rr.yaml \
     && chown -R www-data:www-data /var/www/html/bootstrap /var/www/html/storage
+
+# Copy .rr.yaml
+COPY .rr.yaml /var/www/html/.rr.yaml
+
+EXPOSE 8080 8000
+
