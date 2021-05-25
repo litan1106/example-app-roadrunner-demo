@@ -1,7 +1,7 @@
 # ----------------------------------------------- Build Time Arguments ---------------------------------------------
 ARG VARIANT="8.0-apache"
 ARG COMPOSER_VERSION="2.0"
-ARG ROADRUNNER_VERSION="2.0.4"
+ARG ROADRUNNER_VERSION="2.2.1"
 
 # ------------------------------------------------- Composer Image -------------------------------------------------
 FROM composer:${COMPOSER_VERSION} as composer
@@ -37,10 +37,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && rm -rf /var/lib/apt/lists/*
 
 # Setup custom app php.ini
-# php configuration via environment variables broken with RoadRunner 2
-# however, the static-app.ini will work with RoadRunner 2
 COPY app.ini /usr/local/etc/php/conf.d/app.ini
-#COPY static-app.ini /usr/local/etc/php/conf.d/app.ini
 
 # Setup apache2 vhost
 COPY apache2-vhost.conf /etc/apache2/sites-available/000-default.conf
@@ -52,6 +49,8 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 COPY --from=roadrunner /usr/bin/rr /usr/bin/rr
 
 WORKDIR /var/www/html
+
+EXPOSE 8080 8000
 
 # Prepare Laravel project with Octane and RoadRunner
 RUN composer create-project laravel/laravel . \
