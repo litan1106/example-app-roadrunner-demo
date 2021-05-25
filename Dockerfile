@@ -61,3 +61,11 @@ COPY .rr.yaml /var/www/html/.rr.yaml
 
 EXPOSE 8080 8000
 
+# Laravel Octane envs
+ARG APP_ENV="local"
+ARG APP_BASE_PATH="/var/www/html"
+ARG LARAVEL_OCTANE="1"
+
+ENV APP_ENV ${APP_ENV}
+ENV APP_BASE_PATH ${APP_BASE_PATH}
+ENV LARAVEL_OCTANE ${LARAVEL_OCTANE}
