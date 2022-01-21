@@ -1,7 +1,7 @@
 ## Build
 
 ```
-docker build --rm -t litan1106/example-app-roadrunner-demo:latest .
+docker buildx build --rm -t litan1106/example-app-roadrunner-demo:latest .
 ```
 
 ## Serve with Apache2
