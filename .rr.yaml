@@ -1,5 +1,14 @@
-rpc:
-  listen: tcp://127.0.0.1:6001
+http:
+  address: 0.0.0.0:8000
+  pool:
+    num_workers: 1
+    # debug: true
+    max_jobs: 250
+    supervisor:
+      exec_ttl: 90s
+  static:
+    dir: "public"
+  middleware: ["static"]
 
 server:
   command: "php ./vendor/bin/roadrunner-worker"
@@ -7,24 +16,16 @@ server:
     - APP_ENV: "local"
     - APP_BASE_PATH: "/var/www/html"
     - LARAVEL_OCTANE: "1"
-    - XDEBUG_SESSION: "1"
+    # - XDEBUG_SESSION: "1"
 
-http:
-  address: 0.0.0.0:8000
-  pool:
-    num_workers: 1
-    debug: "true"
-    max_jobs: 250
-    supervisor:
-      exec_ttl: 90s
-  static:
-    dir: "public"
-  middleware: ["static"]
-  logs:
-    mode: "development"
-    level: "debug"
-    output: "stdout"
-    encoding: "json"
+rpc:
+  listen: tcp://127.0.0.1:6001
 
 status:
   address: 127.0.0.1:2114
+
+logs:
+  mode: "development"
+  level: "debug"
+  output: "stdout"
+  encoding: "json"
